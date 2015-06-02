@@ -1,0 +1,38 @@
+<h2>Employee</h2>
+
+<form ng-submit="save()" class="form-horizontal">
+	<div class="form-group">
+		<label for="code">Code</label>
+		<input ng-model="entity.code" placeholder="e.g. E01" class="form-control" id="code" type="text" required>
+	</div>
+	<div class="form-group">
+		<label for="name">Name</label>
+		<input ng-model="entity.name" placeholder="e.g. Mikhail Jackson" class="form-control" id="name" type="text" required>
+	</div>
+	<button type="submit" class="btn btn-success pull-right">Save</button>
+</form>
+
+<div class="btn-group">
+	<button ng-click="add()" class="btn btn-primary">+ Add</button>
+	<button ng-click="delete()" class="btn btn-danger">Delete</button>
+</div>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Code</th>
+			<th>Name</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="e in entities">
+			<td>{{e.code}}</td>
+			<td>{{e.name}}</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<div pagination=""></div>
+			</td>
+		</tr>
+	</tbody>
+</table>
