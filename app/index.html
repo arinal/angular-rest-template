@@ -41,8 +41,8 @@
               <ul class="nav navbar-nav">
                 <li class="active"><a href="#/">Home</a></li>
                 <li><a ng-href="#/employee">Employee</a></li>
+                <li><a ng-href="#/product">Product</a></li>
                 <li><a ng-href="#/about">About</a></li>
-                <li><a ng-href="#/">Contact</a></li>
               </ul>
             </div>
           </div>
@@ -51,11 +51,9 @@
 
       <div class="container">
         <div ng-controller="AlertCtrl">
-          <div ng-repeat="alert in alerts" class="alert alert-{{alert.level}} alert-dismissible" role="alert">
-            <button ng-click="dismiss(alert.$index)" type="button" class="close" aria-label="Close"><span>&times;</span></button>
-            {{alert.message}}
-          </div>
+          <alert ng-repeat="alert in alerts" type="{{alert.level}}" close="dismiss($index)">{{alert.message}}</alert>
         </div>
+
         <div ng-view=""></div>
       </div>
 
@@ -80,14 +78,12 @@
      <!-- build:js(.) scripts/vendor.js -->
      <!-- bower:js -->
      <script src="bower_components/jquery/dist/jquery.js"></script>
-     <script src="bower_components/angular/angular.js"></script>
      <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-     <script src="bower_components/angular-animate/angular-animate.js"></script>
-     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-     <script src="bower_components/angular-resource/angular-resource.js"></script>
+     <script src="bower_components/angular/angular.js"></script>
      <script src="bower_components/angular-route/angular-route.js"></script>
-     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-     <script src="bower_components/angular-touch/angular-touch.js"></script>
+     <script src="bower_components/angular-resource/angular-resource.js"></script>
+     <script src="bower_components/angular-animate/angular-animate.js"></script>
+     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
      <!-- endbower -->
      <!-- endbuild -->
 
@@ -96,6 +92,7 @@
      <script src="scripts/common.js"></script>
      <script src="scripts/controllers/main.js"></script>
      <script src="scripts/controllers/employee.js"></script>
+     <script src="scripts/controllers/product.js"></script>
      <script src="scripts/controllers/alert.js"></script>
      <script src="scripts/filters/pages.js"></script>
      <script src="scripts/directives/pagination.js"></script>

@@ -1,13 +1,13 @@
 'use strict'
 
 angular.module 'pos', [
-    'ngAnimate'
-    'ngCookies'
-    'ngResource'
     'ngRoute'
-    'ngSanitize'
-    'ngTouch'
     'ngResource'
+    'ui.bootstrap'
+    # 'ngAnimate'
+    # 'ngCookies'
+    # 'ngSanitize'
+    # 'ngTouch'
   ]
   .config ($routeProvider) ->
     $routeProvider
@@ -17,6 +17,8 @@ angular.module 'pos', [
       .when '/employee',
         templateUrl: 'views/employee.html'
         controller: 'EmployeeCtrl'
+      .when '/product',
+        templateUrl: 'views/product.html'
+        controller: 'ProductCtrl'
       .otherwise
         redirectTo: '/'
-

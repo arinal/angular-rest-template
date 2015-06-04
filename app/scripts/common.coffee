@@ -1,36 +1,54 @@
 'use strict'
 
-window.extendScope = (name, rootScope, scope, resource) ->
+window.extendScope = (name, rootScope, scope, resource, viewModelClass) ->
 	restResource = resource "http://localhost:8080/#{name}/:id"
+	
 	scope.basePath = name
+	scope.page = number: 0, size: 3
+	scope.entityModels = []
+
+	getSelectedEntity = -> scope.selected.getEntity()
+
+	addEntity = (entity) -> 
+		scope.entityModels.push new window[viewModelClass] entity
+
+	scope.selectModel = (model) -> scope.selected = model
+
+	scope.revertEntityModel = -> scope.selected.revert()
 
 	scope.refresh = ->
 		restResource.get {page: scope.page.number, size: scope.page.size}, (data) ->
-			scope.entities = data._embedded["#{name}List"]
+			scope.entityModels = []
+			list = if data._embedded then data._embedded["#{name}List"] else []
+			addEntity e for e in list
+			# [scope.selected] = scope.entityModels # select first
 			scope.page = data.page
-			scope.entity = scope.entities[0]
 
 	scope.add = ->
 		restResource.get {id: 0}, (data) ->
-			scope.entity = data
+			scope.selected = new window[viewModelClass] data
 
 	scope.save = ->
-		restResource.save scope.entity, ->
+		restResource.save getSelectedEntity(), ->
 			rootScope.$broadcast 'entity-saved',
-				data: scope.entity
+				data: scope.selected
 				type: name
 			scope.refresh()
+			for m in scope.entityModels
+				scope.selectModel m if m.id == scope.selected.id
+			
 
 	scope.delete = ->
-		restResource.delete {id: scope.entity.id}
+		restResource.delete {id: scope.selected.id}
 			, ->	
 				rootScope.$broadcast 'entity-deleted',
-					data: scope.entity
+					data: scope.selected
 					type: name
 				scope.refresh()
+				scope.selectModel {}
 			, ->
 				rootScope.$broadcast 'entity-deletion-failed',
-					data: scope.entity
+					data: scope.selected
 					type: name
 
 	scope.gotoFirstPage = ->
@@ -53,4 +71,18 @@ window.extendScope = (name, rootScope, scope, resource) ->
 		scope.page.number = n
 		scope.refresh()
 
-	scope.page = number: 0, size: 3
+
+class window.EntityViewModel
+	constructor: (@originalEntity) -> @transform @originalEntity
+	getEntity: -> id: @id
+	revert: -> {@id, @code} = @originalEntity
+	
+	dateToArray: (date) -> [date.getFullYear(), date.getMonth() + 1, date.getDate()]
+
+	transform: (entity) ->
+		{@id, @code} = entity
+
+	popDate: (event, name) ->
+		event.preventDefault()
+		event.stopPropagation()
+		this[name] = true

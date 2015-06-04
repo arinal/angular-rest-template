@@ -1,6 +1,6 @@
 'use strict'
 
 angular.module 'pos'
-  .directive 'pagination', ->
+  .directive 'pagenavigation', ->
     restrict: 'A'
     templateUrl: 'views/directives/pagination.html'
