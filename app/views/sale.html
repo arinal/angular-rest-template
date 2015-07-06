@@ -1,0 +1,80 @@
+<h4>Sale</h4>
+
+<form ng-submit="vm.save()" class="form-horizontal">
+	<div class="form-group">
+		<label for="code" class="col-sm-2 control-label">Code</label>
+		<div class="col-sm-10">
+			<input ng-model="vm.selected.code" placeholder="e.g. E01" class="form-control" id="code" type="text" required>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="time" class="col-sm-2 control-label">Time</label>
+		<div class="col-sm-10">
+			<p class="input-group">
+				<input type="text" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="vm.selected.time" is-open="vm.selected.timePopped" />
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default" ng-click="vm.selected.popDate($event, 'timePopped')"><i class="glyphicon glyphicon-calendar"></i></button>
+				</span>
+			</p>
+		</div>
+	</div>
+
+	<table class="table table-strip table-hover">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Product</th>
+				<th>Quantity</th>
+				<th>Price</th>
+				<th>Subtotal</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="sli in vm.selected.lineItems">
+				<td>{{$index + 1}}</td>
+				<td>{{sli.product.name}}</td>
+				<td>
+					<input ng-model="sli.quantity" min="0" type="number">
+				</td>
+				<td>{{sli.unitPrice}}</td>
+				<td>{{sli.subtotal}}</td>
+			</tr>
+		</tbody>
+	</table>
+	<hr>
+	<div class="row">
+		<span>
+			<div class="btn-group pull-right">
+				<button type="button" ng-click="vm.revertEntityModel()" class="btn btn-danger">Cancel</button>
+				<button type="button" ng-click="vm.add()" class="btn btn-primary">+ Add</button>
+				<button type="button" ng-click="vm.delete()" class="btn btn-danger">- Delete</button>
+				<button type="submit" class="btn btn-success">Save</button>
+			</div>	
+		</span>
+	</div>
+	<hr>
+</form>
+
+<div class="panel panel-default">
+	<div class="panel-heading">Sale List</div>
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>Code</th>
+				<th>Time</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="e in vm.entityModels" class="{{e.status}}" ng-click="vm.selectModel(e)">
+				<td>{{e.code}}</td>
+				<td>{{e.timeString()}}</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div pagenavigation=""></div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

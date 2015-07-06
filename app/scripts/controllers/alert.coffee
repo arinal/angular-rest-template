@@ -1,23 +1,22 @@
 'use strict'
 
-angular.module('pos').controller 'AlertCtrl', ($scope) ->
+angular.module('pos').controller 'AlertCtrl', ($scope, messageBus) ->
 
-	$scope.dismiss = (index) ->
-		$scope.alerts.splice(index, 1)
+	$scope.alerts = []
 
-	$scope.$on 'entity-saved', (_, args) ->
+	$scope.dismiss = (index) -> $scope.alerts.splice(index, 1)
+
+	messageBus.on 'entity-saved', $scope, (_, args) ->
 		$scope.alerts.push
 			level: 'success'
 			message: "#{args.type} #{args.data.code} has been saved."
 
-	$scope.$on 'entity-deleted', (_, args) ->
+	messageBus.on 'entity-deleted', $scope, (_, args) ->
 		$scope.alerts.push
 			level: 'success'
 			message: "#{args.type} #{args.data.code} has been deleted."
 
-	$scope.$on 'entity-deletion-failed', (_, args) ->
+	messageBus.on 'entity-deletion-failed', $scope, (_, args) ->
 		$scope.alerts.push
 			level: 'danger'
 			message: "#{args.type} #{args.data.code} deletion has been failed."
-
-	$scope.alerts = []

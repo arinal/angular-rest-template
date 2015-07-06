@@ -1,11 +1,11 @@
 'use strict'
 
-angular.module('pos').controller 'EmployeeCtrl', ($rootScope, $scope, $resource) ->
-	window.extendScope 'employee', $rootScope, $scope, $resource, 'EmployeeViewModel'
-	$scope.refresh()
+angular.module('pos').controller 'employeeCtrl', ($scope, $resource, messageBus) ->
+	$scope.vm = new window.viewModel 'employee', 'employeeViewModel', messageBus, $scope, $resource
+	$scope.vm.refresh()
 	
-class window.EmployeeViewModel extends window.EntityViewModel
-	constructor: (@originalEntity) -> super @originalEntity
+class window.employeeViewModel extends window.entityViewModel
+	constructor: (@raw) -> super @raw
 	
 	getEntity: ->
 		id: @id
@@ -14,8 +14,6 @@ class window.EmployeeViewModel extends window.EntityViewModel
 		gender: @gender
 		birthDate: @dateToArray @birthDate
 
-	revert: -> @transform @originalEntity
-
-	transform: (entity) ->
-		{@id, @code, @name, @gender, @birthDate} = entity
+	transform: (obj) ->
+		{@id, @code, @name, @gender, @birthDate} = obj
 		@birthDate = new Date @birthDate

