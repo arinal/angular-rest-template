@@ -1,17 +1,15 @@
 'use strict'
 
 class window.viewModel
-	constructor: (@name, @viewModelClass, @bus, scope, resource) ->
+	constructor: (@name, @entityViewModelClass, @bus, scope, resource) ->
 		@restResource = resource "http://localhost:8080/#{@name}/:id"
 		@basePath = @name
 		@page = number: 0, size: 3
 		@entityModels = []
-		
 		@bus.on 'search', scope, (_, key) => @refresh key
 
-
 	getSelectedEntity: -> @selected.getEntity()
-	addEntity: (entity) -> @entityModels.push new window[@viewModelClass] entity
+	addEntity: (entity) -> @entityModels.push new window[@entityViewModelClass] entity
 	revertEntityModel: -> @selected.revert()
 
 	selectModel: (model) ->
@@ -26,9 +24,13 @@ class window.viewModel
 			@addEntity e for e in list
 			@page = data.page
 
+	refreshSelected: ->
+		@restResource.get {id: selected.id}, (data) =>
+			@selectModel new window[@entityViewModelClass] data
+
 	add: ->
 		@restResource.get {id: 0}, (data) =>
-			@selected = new window[@viewModelClass] data
+			@selectModel new window[@entityViewModelClass] data
 
 	save: ->
 		@restResource.save @getSelectedEntity(), =>
@@ -36,6 +38,7 @@ class window.viewModel
 				data: @selected
 				type: @name
 			@refresh()
+			@refreshSelected()
 
 	delete: ->
 		@restResource.delete {id: @selected.id}
@@ -50,26 +53,22 @@ class window.viewModel
 					data: @selected
 					type: @name
 
-	gotoFirstPage: ->
-		@page.number = 0
-		@refresh()
-
-	gotoLastPage: ->
-		@page.number = @page.totalPages - 1
-		@refresh()
-
-	gotoPreviousPage: ->
-		@page.number--
-		@refresh()
-
-	gotoNextPage: ->
-		@page.number++
-		@refresh()
-
+	gotoFirstPage: -> @gotoPage 0
+	gotoLastPage: -> @gotoPage @page.totalPages - 1
+	gotoPreviousPage: -> @gotoPage --@page.number
+	gotoNextPage: -> @gotoPage ++@page.number
 	gotoPage: (n) ->
 		@page.number = n
 		@refresh()
 
+	initSearchBy: (resource, name...) ->
+		@initSearch resource, n for n in name
+
+	initSearch: (resource, n) ->
+		rsc = resource "http://localhost:8080/#{n}"
+		@["search#{n}"] = (key) ->
+			rsc.get {search: key, page: 0, size: 3}, (data) =>
+				@["#{n}Result"] = if data._embedded then data._embedded["#{n}List"] else []
 
 class window.entityViewModel
 	constructor: (@raw) -> @transform @raw		

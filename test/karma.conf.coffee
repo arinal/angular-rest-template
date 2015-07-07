@@ -21,6 +21,8 @@ module.exports = (config) ->
       'bower_components/angular-resource/angular-resource.js'
       'bower_components/angular-animate/angular-animate.js'
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'
+      'bower_components/angular-ui-select/dist/select.js'
+      'bower_components/angular-sanitize/angular-sanitize.js'
       'bower_components/angular-mocks/angular-mocks.js'
       # endbower
       # bower:coffee

@@ -1,5 +1,5 @@
 # angular-rest-template
-A showcase for building LOB application's common pattern like:
+A showcase for building LOB application's common patterns:
 - Master details.
 - Common controls: associating using searchable dropbox, date time picker, 
 - Communicating between forms using bus (search in form will fill another form's data table).
